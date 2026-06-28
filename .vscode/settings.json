@@ -1,0 +1,49 @@
+{
+  "cSpell.language": "en,fr",
+  "cSpell.words": [
+    "Apprendre",
+    "Plateforme",
+    "Certificat",
+    "Déconnexion",
+    "Connexion",
+    "Feda",
+    "fedapay",
+    "FEDAPAY",
+    "FCFA",
+    "paiement",
+    "cours",
+    "serveur",
+    "données",
+    "utilisateur",
+    "inscrire",
+    "sauvegarder",
+    "suivre",
+    "forum",
+    "dashboard",
+    "certificats",
+    "Glassmorphism",
+    "Topbar",
+    "topbar",
+    "uuidv",
+    "Fonctions",
+    "Communauté",
+    "apprenants",
+    "certificat",
+    "thème",
+    "inscription",
+    "progression"
+  ],
+  "cSpell.enabledFileTypes": {
+    "html": true,
+    "css": true,
+    "javascript": true,
+    "json": true
+  },
+  "css.validate": true,
+  "css.lint.unknownAtRules": "ignore",
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "never"
+  },
+  "html.validate.styles": false,
+  "html.validate.scripts": false
+}

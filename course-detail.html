@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Détail du cours — Apprendre Tout</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="auth.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-icon">✦</span>
+      <span>Apprendre Tout</span>
+    </div>
+    <div class="topbar-actions">
+      <button class="theme-toggle" type="button" aria-label="Changer le thème">
+        <span class="theme-icon">🌙</span>
+      </button>
+      <button class="menu-button" aria-expanded="false" aria-controls="main-menu" aria-label="Ouvrir le menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <nav class="menu" id="main-menu">
+      <a href="index.html">Accueil</a>
+      <a href="index.html#courses">Métiers</a>
+      <a href="forum.html">Forum</a>
+      <a href="dashboard.html">Tableau de bord</a>
+      <div class="menu-auth" id="menu-auth"></div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="section course-detail">
+      <div id="course-detail-content">
+        <!-- Remplacé par JS -->
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <span class="brand-icon">✦</span>
+        <span>Apprendre Tout</span>
+      </div>
+      <p class="footer-copy">© <span id="year"></span> — Formation complète</p>
+    </div>
+  </footer>
+
+  <script src="auth.js"></script>
+  <script src="courses.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Récupérer l'ID du cours depuis l'URL
+      const params = new URLSearchParams(window.location.search);
+      const courseId = params.get('id');
+      const container = document.getElementById('course-detail-content');
+
+      // Auth UI
+      if (typeof Auth !== 'undefined') {
+        const currentUser = Auth.getCurrentUser();
+        const menuAuth = document.getElementById('menu-auth');
+        if (menuAuth) {
+          if (currentUser) {
+            menuAuth.innerHTML = `
+              <span class="auth-user">
+                <span class="auth-user-avatar">${currentUser.avatar || '😊'}</span>
+                <span>${currentUser.username}</span>
+              </span>
+              <button class="auth-btn auth-btn-logout" id="detail-logout-btn">🚪 Déconnexion</button>
+            `;
+            document.getElementById('detail-logout-btn')?.addEventListener('click', function() {
+              if (Auth && Auth.logout) Auth.logout();
+            });
+          } else {
+            menuAuth.innerHTML = `
+              <a href="login.html" class="auth-btn auth-btn-login">🔑 Connexion</a>
+              <a href="register.html" class="auth-btn auth-btn-register">✨ S'inscrire</a>
+            `;
+          }
+        }
+      }
+
+      function getPurchasedCourses() {
+        const user = Auth ? Auth.getCurrentUser() : null;
+        if (!user) return [];
+        const users = window.getUsers ? window.getUsers() : {};
+        const userData = users[user.id];
+        return userData?.purchasedCourses || [];
+      }
+
+      if (!courseId || typeof COURSES_DATA === 'undefined') {
+        container.innerHTML = `
+          <div class="glass" style="padding:3rem;text-align:center;border-radius:var(--radius-md);">
+            <p style="font-size:1.2rem;color:var(--color-text-muted);">❌ Cours non trouvé</p>
+            <a href="index.html#courses" class="button button-primary" style="margin-top:1rem;">📚 Voir tous les métiers</a>
+          </div>
+        `;
+        return;
+      }
+
+      const course = COURSES_DATA.find(c => c.id === courseId);
+      if (!course) {
+        container.innerHTML = `
+          <div class="glass" style="padding:3rem;text-align:center;border-radius:var(--radius-md);">
+            <p style="font-size:1.2rem;color:var(--color-text-muted);">❌ Cours non trouvé</p>
+            <a href="index.html#courses" class="button button-primary" style="margin-top:1rem;">📚 Voir tous les métiers</a>
+          </div>
+        `;
+        return;
+      }
+
+      const isPurchased = getPurchasedCourses().includes(course.id);
+
+      // État du quiz
+      let quizState = {};
+      let quizResults = null;
+
+      // Notation
+      let userRating = 0;
+      let ratings = JSON.parse(localStorage.getItem('course_ratings_' + course.id) || '{"average":0,"count":0,"reviews":[]}');
+
+      function renderCourse() {
+        // Vidéos
+        const videosHTML = course.videos ? course.videos.map((video, i) => `
+          <div class="glass" style="padding:1rem;border-radius:var(--radius-sm);margin-bottom:1rem;">
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.5rem;">
+              <span style="font-weight:600;">${i+1}. ${video.title}</span>
+              <span style="color:var(--color-text-subtle);font-size:0.85rem;">⏱️ ${video.duration}</span>
+            </div>
+            ${isPurchased ? `
+              <div style="margin-top:0.5rem;position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:var(--radius-sm);">
+                <iframe src="${video.url}" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allowfullscreen></iframe>
+              </div>
+            ` : `
+              <div style="margin-top:0.5rem;padding:1rem;text-align:center;background:var(--color-surface-tint);border-radius:var(--radius-sm);">
+                <span style="color:var(--color-text-muted);">🔒 Achete ce cours pour accéder aux vidéos</span>
+              </div>
+            `}
+          </div>
+        `).join('') : '<p style="color:var(--color-text-muted);">📹 Aucune vidéo pour ce cours.</p>';
+
+        // Quiz
+        let quizHTML = '';
+        if (course.quiz && course.quiz.length > 0 && isPurchased) {
+          quizHTML = `
+            <div class="quiz-container" id="quiz-container">
+              <h3 style="margin-bottom:1rem;">🧪 Quiz</h3>
+              ${course.quiz.map((q, index) => `
+                <div class="quiz-question" data-index="${index}">
+                  <div class="quiz-question-number">Question ${index+1}/${course.quiz.length}</div>
+                  <div class="quiz-question-text">${q.question}</div>
+                  <div class="quiz-options">
+                    ${q.options.map((opt, optIndex) => `
+                      <div class="quiz-option" data-question="${index}" data-option="${optIndex}" onclick="selectAnswer(${index}, ${optIndex})">
+                        <span class="quiz-option-letter">${String.fromCharCode(65 + optIndex)}.</span>
+                        <span>${opt}</span>
+                      </div>
+                    `).join('')}
+                  </div>
+                </div>
+              `).join('')}
+              <button class="button button-primary" onclick="submitQuiz()" style="margin-top:1rem;">📊 Voir les résultats</button>
+              <div id="quiz-result" style="margin-top:1rem;"></div>
+            </div>
+          `;
+        } else if (course.quiz && course.quiz.length > 0 && !isPurchased) {
+          quizHTML = `
+            <div style="padding:1rem;text-align:center;background:var(--color-surface-tint);border-radius:var(--radius-sm);">
+              <span style="color:var(--color-text-muted);">🔒 Achète ce cours pour accéder au quiz</span>
+            </div>
+          `;
+        } else {
+          quizHTML = '<p style="color:var(--color-text-muted);">📝 Aucun quiz pour ce cours.</p>';
+        }
+
+        // Exercices
+        let exercisesHTML = '';
+        if (course.exercises && course.exercises.length > 0 && isPurchased) {
+          exercisesHTML = course.exercises.map((ex, i) => `
+            <div class="exercise-card glass">
+              <h4>${i+1}. ${ex.title}</h4>
+              <p style="color:var(--color-text-muted);">${ex.description}</p>
+              <span class="exercise-difficulty ${ex.difficulty.toLowerCase()}">${ex.difficulty}</span>
+              <button class="button button-secondary" onclick="toggleSolution(${i})" style="margin-top:0.5rem;padding:0.3rem 1rem;font-size:0.8rem;">
+                💡 Voir la solution
+              </button>
+              <div class="exercise-solution" id="solution-${i}">
+                <p style="color:var(--color-text-muted);">💡 Solution : ${ex.solution || 'À venir...'}</p>
+              </div>
+            </div>
+          `).join('');
+        } else if (course.exercises && course.exercises.length > 0 && !isPurchased) {
+          exercisesHTML = `
+            <div style="padding:1rem;text-align:center;background:var(--color-surface-tint);border-radius:var(--radius-sm);">
+              <span style="color:var(--color-text-muted);">🔒 Achète ce cours pour accéder aux exercices</span>
+            </div>
+          `;
+        } else {
+          exercisesHTML = '<p style="color:var(--color-text-muted);">📝 Aucun exercice pour ce cours.</p>';
+        }
+
+        // Notation
+        const starsHTML = Array.from({length:5}, (_, i) => `
+          <span class="star ${i < userRating ? 'active' : ''}" onclick="setRating(${i+1})">★</span>
+        `).join('');
+
+        const reviewsHTML = ratings.reviews.slice(0,3).map(r => `
+          <div class="review-item">
+            <div class="review-item-header">
+              <span class="review-item-name">${r.name}</span>
+              <span class="review-item-stars">${'★'.repeat(r.rating)}</span>
+              <span class="review-item-date">${new Date(r.date).toLocaleDateString('fr-FR')}</span>
+            </div>
+            <div class="review-item-content">${r.content}</div>
+          </div>
+        `).join('');
+
+        container.innerHTML = `
+          <div class="glass" style="padding:2rem;border-radius:var(--radius-lg);margin-bottom:2rem;">
+            <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:1rem;">
+              <span style="font-size:3rem;">${course.icon}</span>
+              <div>
+                <h1 style="font-family:var(--font-display);">${course.title}</h1>
+                <div style="display:flex;gap:1rem;flex-wrap:wrap;color:var(--color-text-muted);">
+                  <span>📂 ${course.category}</span>
+                  <span>📊 ${course.level}</span>
+                  <span>⏱️ ${course.duration}</span>
+                  <span>💰 ${course.price.toLocaleString()} FCFA</span>
+                </div>
+              </div>
+            </div>
+            <p style="color:var(--color-text-muted);font-size:1.05rem;">${course.description}</p>
+            <div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:1rem;">
+              ${course.skills.map(s => `<span class="skill-tag">${s}</span>`).join('')}
+            </div>
+          </div>
+
+          <!-- Notation -->
+          <div class="glass" style="padding:1.5rem;border-radius:var(--radius-md);margin-bottom:2rem;">
+            <h3>⭐ Notation du cours</h3>
+            ${isPurchased ? `
+              <div class="rating-container">
+                <div class="rating-stars">${starsHTML}</div>
+                <span class="rating-value">${ratings.average.toFixed(1)}</span>
+                <span class="rating-count">(${ratings.count} avis)</span>
+              </div>
+              <div style="margin-top:0.5rem;">
+                <textarea id="review-text" placeholder="Partage ton retour sur ce cours..." style="width:100%;padding:0.85rem;border-radius:var(--radius-sm);border:2px solid rgba(108,60,225,0.08);background:var(--color-surface);font-size:0.95rem;min-height:60px;resize:vertical;"></textarea>
+                <button class="button button-primary" onclick="submitReview()" style="margin-top:0.5rem;padding:0.5rem 1.5rem;font-size:0.9rem;">📤 Envoyer mon avis</button>
+              </div>
+            ` : `
+              <p style="color:var(--color-text-muted);">🔒 Achète ce cours pour laisser un avis</p>
+            `}
+            ${reviewsHTML ? `<div class="rating-reviews">${reviewsHTML}</div>` : ''}
+          </div>
+
+          <!-- Vidéos -->
+          <div class="glass" style="padding:1.5rem;border-radius:var(--radius-md);margin-bottom:2rem;">
+            <h3>📹 Vidéos du cours</h3>
+            ${videosHTML}
+          </div>
+
+          <!-- Quiz -->
+          <div class="glass" style="padding:1.5rem;border-radius:var(--radius-md);margin-bottom:2rem;">
+            ${quizHTML}
+          </div>
+
+          <!-- Exercices -->
+          <div class="glass" style="padding:1.5rem;border-radius:var(--radius-md);margin-bottom:2rem;">
+            <h3>✍️ Exercices pratiques</h3>
+            ${exercisesHTML}
+          </div>
+
+          <!-- Leçons -->
+          <div class="glass" style="padding:1.5rem;border-radius:var(--radius-md);">
+            <h3>📚 Plan du cours</h3>
+            <ul style="list-style:none;padding:0;">
+              ${course.lessons.map((lesson, i) => `
+                <li style="padding:0.6rem 0;border-bottom:1px solid rgba(108,60,225,0.05);display:flex;justify-content:space-between;align-items:center;">
+                  <span>${i+1}. ${lesson.title}</span>
+                  <span style="color:var(--color-text-subtle);font-size:0.85rem;">⏱️ ${lesson.duration}</span>
+                </li>
+              `).join('')}
+            </ul>
+          </div>
+        `;
+
+        // Exposer les fonctions du quiz
+        window.selectAnswer = selectAnswer;
+        window.submitQuiz = submitQuiz;
+        window.setRating = setRating;
+        window.submitReview = submitReview;
+        window.toggleSolution = toggleSolution;
+      }
+
+      // Fonctions du quiz
+      function selectAnswer(questionIndex, optionIndex) {
+        const questionEl = document.querySelector(`.quiz-question[data-index="${questionIndex}"]`);
+        if (!questionEl) return;
+        const options = questionEl.querySelectorAll('.quiz-option');
+        options.forEach((el, i) => {
+          el.classList.toggle('selected', i === optionIndex);
+        });
+        quizState[questionIndex] = optionIndex;
+      }
+
+      function submitQuiz() {
+        if (!course.quiz) return;
+        let correct = 0;
+        course.quiz.forEach((q, i) => {
+          const selected = quizState[i];
+          const questionEl = document.querySelector(`.quiz-question[data-index="${i}"]`);
+          if (!questionEl) return;
+          const options = questionEl.querySelectorAll('.quiz-option');
+          options.forEach((el, j) => {
+            el.classList.remove('correct', 'wrong');
+            if (j === q.correct) el.classList.add('correct');
+            if (j === selected && selected !== q.correct) el.classList.add('wrong');
+          });
+          if (selected === q.correct) correct++;
+        });
+
+        const total = course.quiz.length;
+        const percentage = Math.round((correct / total) * 100);
+        const resultDiv = document.getElementById('quiz-result');
+        resultDiv.innerHTML = `
+          <div class="glass" style="padding:1.5rem;border-radius:var(--radius-md);text-align:center;">
+            <div class="quiz-result-score">${correct}/${total}</div>
+            <div class="quiz-result-text">
+              ${percentage >= 80 ? '🎉 Excellent ! Tu maîtrises le sujet !' :
+                percentage >= 60 ? '👍 Bien joué ! Continue comme ça !' :
+                '📖 Revois les leçons et réessaie !'}
+            </div>
+            <div style="margin-top:1rem;height:8px;background:var(--color-surface-tint);border-radius:var(--radius-pill);overflow:hidden;">
+              <div style="height:100%;width:${percentage}%;background:${percentage >= 80 ? 'var(--color-accent-mint)' : percentage >= 60 ? '#FFD700' : '#FF6B8A'};border-radius:var(--radius-pill);transition:width 0.6s ease;"></div>
+            </div>
+          </div>
+        `;
+      }
+
+      function toggleSolution(index) {
+        const el = document.getElementById(`solution-${index}`);
+        if (el) el.classList.toggle('show');
+      }
+
+      function setRating(value) {
+        userRating = value;
+        const stars = document.querySelectorAll('.rating-stars .star');
+        stars.forEach((star, i) => {
+          star.classList.toggle('active', i < value);
+        });
+      }
+
+      function submitReview() {
+        const text = document.getElementById('review-text')?.value.trim();
+        if (!text) {
+          alert('Veuillez écrire un avis.');
+          return;
+        }
+        if (userRating === 0) {
+          alert('Veuillez donner une note.');
+          return;
+        }
+
+        ratings.reviews.push({
+          name: Auth.getCurrentUser()?.username || 'Anonyme',
+          rating: userRating,
+          content: text,
+          date: new Date().toISOString()
+        });
+
+        const total = ratings.reviews.length;
+        const sum = ratings.reviews.reduce((acc, r) => acc + r.rating, 0);
+        ratings.average = sum / total;
+        ratings.count = total;
+
+        localStorage.setItem('course_ratings_' + course.id, JSON.stringify(ratings));
+
+        document.getElementById('review-text').value = '';
+        userRating = 0;
+        document.querySelectorAll('.rating-stars .star').forEach(s => s.classList.remove('active'));
+
+        alert('✅ Merci pour ton avis !');
+        renderCourse();
+      }
+
+      renderCourse();
+      document.getElementById('year').textContent = new Date().getFullYear();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,223 @@
+/* ==========================================
+   CORRECTIONS POUR index.html
+   ========================================== */
+
+.course-price {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.9rem;
+}
+
+.footer-text {
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+
+/* ==========================================
+   FORUM — Styles spécifiques
+   ========================================== */
+
+/* Conteneurs cachés */
+.hidden-topic-form {
+  display: none;
+  margin-top: 2rem;
+}
+
+.topic-form-container {
+  padding: 2rem;
+  border-radius: var(--radius-md);
+}
+
+.topic-form-title {
+  margin-bottom: 1rem;
+}
+
+.hidden-topic-view {
+  display: none;
+}
+
+/* Actions du forum */
+.forum-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.forum-filters {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.forum-filters .courses-search {
+  max-width: 250px;
+}
+
+.forum-form-actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.reply-section {
+  margin-top: 2rem;
+}
+
+.reply-section textarea {
+  width: 100%;
+  padding: 0.85rem;
+  border-radius: var(--radius-sm);
+  border: 2px solid rgba(108, 60, 225, 0.08);
+  background: var(--color-surface);
+  font-size: 0.95rem;
+  transition: var(--transition-smooth);
+  resize: vertical;
+  min-height: 120px;
+}
+
+.reply-section textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 4px rgba(108, 60, 225, 0.08);
+}
+
+/* Sujets vides */
+.empty-topics {
+  padding: 3rem;
+  text-align: center;
+  border-radius: var(--radius-md);
+}
+
+.empty-topics-icon {
+  font-size: 1.2rem;
+  color: var(--color-text-muted);
+}
+
+.empty-topics-text {
+  font-size: 1.2rem;
+  color: var(--color-text-muted);
+}
+
+.empty-topics-sub {
+  color: var(--color-text-subtle);
+}
+
+/* Détail du sujet */
+.topic-detail-container {
+  padding: 1.5rem;
+  border-radius: var(--radius-md);
+  margin-bottom: 1.5rem;
+}
+
+.topic-detail-title {
+  margin-bottom: 0.5rem;
+}
+
+.topic-meta {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  color: var(--color-text-subtle);
+}
+
+.topic-detail-content {
+  color: var(--color-text-muted);
+  line-height: 1.8;
+}
+
+/* Tags des sujets */
+.forum-topic-tags {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 0.3rem;
+}
+
+.forum-topic-tag.hot {
+  background: rgba(255, 107, 138, 0.15);
+  color: #FF6B8A;
+}
+
+.forum-topic-tag.solved {
+  background: rgba(0, 210, 160, 0.15);
+  color: #00D2A0;
+}
+
+.forum-topic-tag.pinned {
+  background: rgba(255, 215, 0, 0.15);
+  color: #FFD700;
+}
+
+/* Messages du forum */
+.forum-message {
+  padding: 1.25rem;
+  border-radius: var(--radius-sm);
+  margin-bottom: 1rem;
+  border-left: 3px solid var(--color-primary);
+  background: var(--color-surface-tint);
+}
+
+.forum-message-author {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.forum-message-author-avatar {
+  font-size: 1.8rem;
+}
+
+.forum-message-author-name {
+  font-weight: 600;
+}
+
+.forum-message-author-date {
+  font-size: 0.8rem;
+  color: var(--color-text-subtle);
+}
+
+.forum-message-content {
+  color: var(--color-text-muted);
+  line-height: 1.8;
+}
+
+/* Dark theme */
+body.dark-theme .forum-message {
+  background: rgba(26, 10, 46, 0.4);
+}
+
+body.dark-theme .empty-topics {
+  background: rgba(26, 10, 46, 0.4);
+}
+
+body.dark-theme .topic-detail-container {
+  background: rgba(26, 10, 46, 0.4);
+}
+
+body.dark-theme .reply-section textarea {
+  background: rgba(26, 10, 46, 0.6);
+  color: var(--color-text);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+/* ==========================================
+   CORRECTION -webkit-line-clamp
+   ========================================== */
+
+.course-card > p {
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+  flex: 1;
+  margin-bottom: 1rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  line-clamp: 3;
+  overflow: hidden;
+}

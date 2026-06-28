@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Apprendre Tout — Élève ton esprit</title>
+  <meta name="description" content="Un espace d'apprentissage raffiné pour progresser avec élégance et clarté." />
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="auth.css" />
+</head>
+<body>
+  <!-- Loader -->
+  <div class="loader" id="loader">
+    <div class="loader-ring"></div>
+    <p class="loader-text">Chargement...</p>
+  </div>
+
+  <!-- Barre de progression -->
+  <div class="progress-bar" id="progress-bar"></div>
+
+  <!-- Header -->
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-icon">✦</span>
+      <span>Apprendre Tout</span>
+    </div>
+    <div class="topbar-actions">
+      <button class="theme-toggle" type="button" aria-label="Changer le thème">
+        <span class="theme-icon">🌙</span>
+      </button>
+      <button class="menu-button" aria-expanded="false" aria-controls="main-menu" aria-label="Ouvrir le menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <nav class="menu" id="main-menu">
+      <a href="#hero">Accueil</a>
+      <a href="#courses">Métiers</a>
+      <a href="#about">À propos</a>
+      <a href="certificate.html">🎓 Certificat</a>
+      <div class="menu-auth" id="menu-auth"></div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <section id="hero" class="hero">
+      <div class="hero-bg-particles" id="particles"></div>
+      <div class="hero-content">
+        <p class="eyebrow">✨ Apprendre aujourd'hui</p>
+        <h1>Découvre le métier<br />qui te passionne</h1>
+        <p>Des formations complètes dans tous les domaines. Commence gratuitement et progresse à ton rythme.</p>
+        <div class="hero-actions">
+          <a href="#courses" class="button button-primary">
+            <span>Explorer les métiers</span>
+            <span class="button-icon">→</span>
+          </a>
+          <a href="forum.html" class="button button-secondary">💬 Communauté</a>
+        </div>
+        <p class="update-note">📅 Dernière mise à jour : 26 juin 2026</p>
+      </div>
+      <div class="hero-box glass">
+        <div class="hero-box-header">
+          <span class="hero-box-badge">🌟 Gratuit</span>
+          <p class="hero-box-title">Apprends sans limite</p>
+        </div>
+        <p>Explore tous les métiers librement. Crée un compte pour suivre ta progression et sauvegarder tes cours.</p>
+        <div class="hero-features">
+          <div class="hero-feature">
+            <span class="hero-feature-icon">📖</span>
+            <div>
+              <strong>Lecture libre</strong>
+              <p>Accède à tout le contenu sans inscription.</p>
+            </div>
+          </div>
+          <div class="hero-feature">
+            <span class="hero-feature-icon">💾</span>
+            <div>
+              <strong>Sauvegarde</strong>
+              <p>Crée un compte pour suivre tes cours.</p>
+            </div>
+          </div>
+          <div class="hero-feature">
+            <span class="hero-feature-icon">💬</span>
+            <div>
+              <strong>Communauté</strong>
+              <p>Échange avec d'autres apprenants sur le forum.</p>
+            </div>
+          </div>
+          <div class="hero-feature">
+            <span class="hero-feature-icon">🎓</span>
+            <div>
+              <strong>Certification</strong>
+              <p>Obtiens un certificat pour chaque cours terminé.</p>
+            </div>
+          </div>
+        </div>
+        <div class="hero-auth-status" id="hero-auth-status"></div>
+      </div>
+    </section>
+
+    <!-- SECTION MÉTIERS -->
+    <section id="courses" class="section courses">
+      <div class="section-header">
+        <span class="section-tag">📚 Formations</span>
+        <h2>Découvre tous les métiers</h2>
+        <p>Des formations complètes pour te préparer à ton futur métier.</p>
+        <div class="info-banner" id="courses-info-banner">
+          <span class="info-banner-icon">💡</span>
+          <span class="info-banner-text">Tu peux explorer tous les métiers librement. <strong>Crée un compte</strong> pour suivre ta progression !</span>
+        </div>
+      </div>
+
+      <div class="courses-toolbar">
+        <div class="search-wrapper">
+          <span class="search-icon">🔍</span>
+          <input type="search" id="courses-search" class="courses-search" placeholder="Rechercher un métier..." />
+        </div>
+        <div class="filter-wrapper">
+          <select id="courses-filter" class="courses-filter" aria-label="Filtrer par catégorie">
+            <option value="all">Toutes les catégories</option>
+            <option value="Informatique">💻 Informatique</option>
+            <option value="Marketing">📈 Marketing</option>
+            <option value="Design">🎨 Design</option>
+            <option value="Business">🚀 Business</option>
+            <option value="Santé">🏥 Santé</option>
+            <option value="Art">🎭 Art & Culture</option>
+            <option value="Bâtiment">🧱 Bâtiment</option>
+            <option value="Agriculture">🌾 Agriculture</option>
+            <option value="Transport">🚛 Transport</option>
+            <option value="Hôtellerie">🍳 Hôtellerie</option>
+            <option value="Services">💆 Services</option>
+            <option value="Éducation">📚 Éducation</option>
+            <option value="Artisanat">🔨 Artisanat</option>
+            <option value="Médias">📰 Médias</option>
+            <option value="Sport">💪 Sport</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="courses-counter" id="courses-counter">
+        <span id="courses-count">0</span> métiers trouvés
+      </div>
+
+      <div class="courses-grid" id="courses-grid">
+        <p class="loading-message">⏳ Chargement des métiers...</p>
+      </div>
+
+      <p class="courses-empty" id="courses-empty">Aucun métier ne correspond à ta recherche.</p>
+    </section>
+
+    <!-- Features -->
+    <section id="features" class="section features">
+      <div class="section-header">
+        <span class="section-tag">Pourquoi ce site ?</span>
+        <h2>Des fonctionnalités pensées pour toi</h2>
+        <p>Des outils élégants pour apprendre sans complication.</p>
+      </div>
+      <div class="feature-grid">
+        <article class="feature-card glass" data-delay="0">
+          <div class="feature-icon">🎨</div>
+          <h3>Design épuré</h3>
+          <p>Une interface minimaliste pour te concentrer sur l'essentiel.</p>
+        </article>
+        <article class="feature-card glass" data-delay="100">
+          <div class="feature-icon">💬</div>
+          <h3>Forum communautaire</h3>
+          <p>Échange avec d'autres apprenants.</p>
+        </article>
+        <article class="feature-card glass" data-delay="200">
+          <div class="feature-icon">🎓</div>
+          <h3>Certificats</h3>
+          <p>Valide tes compétences avec un certificat.</p>
+        </article>
+        <article class="feature-card glass" data-delay="300">
+          <div class="feature-icon">📝</div>
+          <h3>Bloc-notes</h3>
+          <p>Prends des notes et sauvegarde-les localement.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Topics -->
+    <section id="topics" class="section topics">
+      <div class="section-header">
+        <span class="section-tag">Explorer</span>
+        <h2>Thèmes essentiels</h2>
+        <p>Choisis un sujet et découvre des conseils clairs et applicables.</p>
+        <div class="info-banner" id="topics-info-banner">
+          <span class="info-banner-icon">💡</span>
+          <span class="info-banner-text">Tu peux explorer tous les thèmes librement. <strong>Crée un compte</strong> pour sauvegarder ta progression !</span>
+        </div>
+      </div>
+
+      <div class="topics-toolbar">
+        <div class="search-wrapper">
+          <span class="search-icon">🔍</span>
+          <input type="search" id="topics-search" class="topics-search" placeholder="Rechercher un thème..." />
+        </div>
+      </div>
+
+      <div class="progress-summary">
+        <span id="progress-label">0 / 4 thèmes explorés</span>
+        <span class="progress-track">
+          <span class="progress-track-fill" id="progress-track-fill"></span>
+        </span>
+        <button class="progress-save-btn" id="progress-save-btn" onclick="saveGuestProgress()">💾 Sauvegarder ma progression</button>
+      </div>
+
+      <p class="topics-empty" id="topics-empty">Aucun thème ne correspond à ta recherche.</p>
+
+      <div class="cards" id="topics-cards">
+        <article class="card glass" data-topic-id="competences" data-keywords="compétences organisation concentration méthode étude">
+          <div class="card-top">
+            <div><span class="card-emoji">🧠</span><h3>Compétences</h3></div>
+            <label class="progress-check">
+              <input type="checkbox" class="topic-done-checkbox" />
+              <span>Vu</span>
+            </label>
+          </div>
+          <p>Organisation, concentration et méthode pour apprendre plus efficacement.</p>
+          <div class="card-footer">
+            <button class="card-toggle" type="button" aria-expanded="false">
+              <span>Voir plus</span>
+              <span class="toggle-icon">▾</span>
+            </button>
+          </div>
+          <div class="card-details" aria-hidden="true">
+            <ul>
+              <li>Structurer tes idées avec des listes</li>
+              <li>Créer des routines d'étude simples</li>
+              <li>Réviser sans te sentir débordé</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="card glass" data-topic-id="langues" data-keywords="langues astuces exercices vocabulaire">
+          <div class="card-top">
+            <div><span class="card-emoji">🌍</span><h3>Langues</h3></div>
+            <label class="progress-check">
+              <input type="checkbox" class="topic-done-checkbox" />
+              <span>Vu</span>
+            </label>
+          </div>
+          <p>Des astuces simples, des exercices faciles et des ressources pour progresser en langue.</p>
+          <div class="card-footer">
+            <button class="card-toggle" type="button" aria-expanded="false">
+              <span>Voir plus</span>
+              <span class="toggle-icon">▾</span>
+            </button>
+          </div>
+          <div class="card-details" aria-hidden="true">
+            <ul>
+              <li>Apprendre des phrases utiles</li>
+              <li>Écouter des exemples naturels</li>
+              <li>Répéter un petit peu chaque jour</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="card glass" data-topic-id="technologie" data-keywords="technologie web outils numérique informatique">
+          <div class="card-top">
+            <div><span class="card-emoji">💻</span><h3>Technologie</h3></div>
+            <label class="progress-check">
+              <input type="checkbox" class="topic-done-checkbox" />
+              <span>Vu</span>
+            </label>
+          </div>
+          <p>Comprends les bases du web, de la technologie et des outils du quotidien.</p>
+          <div class="card-footer">
+            <button class="card-toggle" type="button" aria-expanded="false">
+              <span>Voir plus</span>
+              <span class="toggle-icon">▾</span>
+            </button>
+          </div>
+          <div class="card-details" aria-hidden="true">
+            <ul>
+              <li>Comprendre les bases du web</li>
+              <li>Découvrir des outils simples</li>
+              <li>Appliquer les concepts avec des exemples</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="card glass" data-topic-id="creativite" data-keywords="créativité projets idées inspiration confiance">
+          <div class="card-top">
+            <div><span class="card-emoji">🎨</span><h3>Créativité</h3></div>
+            <label class="progress-check">
+              <input type="checkbox" class="topic-done-checkbox" />
+              <span>Vu</span>
+            </label>
+          </div>
+          <p>Fais évoluer ta créativité avec des exercices simples et inspirants.</p>
+          <div class="card-footer">
+            <button class="card-toggle" type="button" aria-expanded="false">
+              <span>Voir plus</span>
+              <span class="toggle-icon">▾</span>
+            </button>
+          </div>
+          <div class="card-details" aria-hidden="true">
+            <ul>
+              <li>Tester de nouvelles façons de penser</li>
+              <li>Créer des petits projets personnels</li>
+              <li>Booster ta confiance avec des réussites rapides</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Learning Path -->
+    <section id="learning-path" class="section learning-path">
+      <div class="section-header">
+        <span class="section-tag">Parcours</span>
+        <h2>Ton chemin d'apprentissage</h2>
+        <p>Choisis ton niveau et découvre des conseils adaptés à ta progression.</p>
+      </div>
+      <div class="path-selector">
+        <button class="path-button active" data-path="beginner">🌱 Débutant</button>
+        <button class="path-button" data-path="intermediate">🌿 Intermédiaire</button>
+        <button class="path-button" data-path="advanced">🚀 Avancé</button>
+      </div>
+      <div class="path-panels">
+        <div class="path-panel active" data-path="beginner">
+          <article class="path-card glass">
+            <span class="path-card-icon">🌱</span>
+            <h3>Commencer doucement</h3>
+            <p>Fixe-toi une petite action simple chaque jour.</p>
+          </article>
+          <article class="path-card glass">
+            <span class="path-card-icon">📅</span>
+            <h3>Acquérir une habitude</h3>
+            <p>Répète pendant 5 à 10 minutes pour progresser sans stress.</p>
+          </article>
+        </div>
+        <div class="path-panel" data-path="intermediate">
+          <article class="path-card glass">
+            <span class="path-card-icon">⏰</span>
+            <h3>Organiser son temps</h3>
+            <p>Utilise des créneaux courts mais réguliers pour avancer.</p>
+          </article>
+          <article class="path-card glass">
+            <span class="path-card-icon">🔄</span>
+            <h3>Réviser efficacement</h3>
+            <p>Relis rapidement et note les points à revoir.</p>
+          </article>
+        </div>
+        <div class="path-panel" data-path="advanced">
+          <article class="path-card glass">
+            <span class="path-card-icon">🎯</span>
+            <h3>Aller plus loin</h3>
+            <p>Choisis un projet concret et travaille en petites étapes.</p>
+          </article>
+          <article class="path-card glass">
+            <span class="path-card-icon">📊</span>
+            <h3>Évaluer ses progrès</h3>
+            <p>Fais un bilan régulier pour savoir ce qui fonctionne.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Resources -->
+    <section id="resources" class="section resources">
+      <div class="section-header">
+        <span class="section-tag">Boîte à outils</span>
+        <h2>Ressources pratiques</h2>
+        <p>Des méthodes concrètes pour avancer pas à pas sans te disperser.</p>
+      </div>
+      <div class="resource-grid">
+        <article class="resource-card glass">
+          <span class="resource-icon">📚</span>
+          <h3>Conseils de lecture</h3>
+          <p>Lis lentement, surligne l'essentiel et fais des résumés courts.</p>
+        </article>
+        <article class="resource-card glass">
+          <span class="resource-icon">✍️</span>
+          <h3>Petits exercices</h3>
+          <p>Applique ce que tu apprends avec de courtes actions concrètes.</p>
+        </article>
+        <article class="resource-card glass">
+          <span class="resource-icon">🗺️</span>
+          <h3>Plan de progression</h3>
+          <p>Choisis trois points à améliorer et avance un par un.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="section about">
+      <div class="section-header">
+        <span class="section-tag">Notre philosophie</span>
+        <h2>Pourquoi ce site ?</h2>
+        <p>Un guide clair, accessible et motivant.</p>
+      </div>
+      <div class="steps">
+        <div class="step-card glass">
+          <span class="step-number">01</span>
+          <h3>Choisis un sujet</h3>
+          <p>Commence par un thème qui t'intéresse réellement.</p>
+        </div>
+        <div class="step-card glass">
+          <span class="step-number">02</span>
+          <h3>Lis pas à pas</h3>
+          <p>Prends ton temps et garde les concepts simples.</p>
+        </div>
+        <div class="step-card glass">
+          <span class="step-number">03</span>
+          <h3>Pratique souvent</h3>
+          <p>La répétition rend l'apprentissage durable.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section faq">
+      <div class="section-header">
+        <span class="section-tag">Aide</span>
+        <h2>Questions fréquentes</h2>
+        <p>Quelques réponses rapides pour bien démarrer.</p>
+      </div>
+      <div class="accordion">
+        <div class="accordion-item">
+          <button class="accordion-button" aria-expanded="false">
+            Comment bien choisir un sujet ?
+            <span class="accordion-icon">+</span>
+          </button>
+          <div class="accordion-panel">
+            <p>Commence par ce qui te motive le plus et reste simple pour avancer vite.</p>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <button class="accordion-button" aria-expanded="false">
+            Comment garder la motivation ?
+            <span class="accordion-icon">+</span>
+          </button>
+          <div class="accordion-panel">
+            <p>Fixe-toi de petites étapes et célèbre chaque progrès, même minime.</p>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <button class="accordion-button" aria-expanded="false">
+            Puis-je apprendre seul ?
+            <span class="accordion-icon">+</span>
+          </button>
+          <div class="accordion-panel">
+            <p>Oui, avec des ressources claires et des actions régulières, tu peux avancer à ton rythme.</p>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <button class="accordion-button" aria-expanded="false">
+            Faut-il un compte pour utiliser le site ?
+            <span class="accordion-icon">+</span>
+          </button>
+          <div class="accordion-panel">
+            <p>Non ! Tu peux explorer tout le contenu librement. Un compte te permet de sauvegarder ta progression.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Notes -->
+    <section id="notes" class="section notes">
+      <div class="section-header">
+        <span class="section-tag">Personnel</span>
+        <h2>Bloc-notes</h2>
+        <p>Écris une idée, une tâche ou un rappel.</p>
+        <div class="info-banner" id="notes-info-banner">
+          <span class="info-banner-icon">💡</span>
+          <span class="info-banner-text">Ta note est sauvegardée localement. <strong>Crée un compte</strong> pour la retrouver sur tous tes appareils !</span>
+        </div>
+      </div>
+      <div class="note-panel glass">
+        <div class="note-header">
+          <span class="note-icon">✏️</span>
+          <span class="note-title">Note rapide</span>
+        </div>
+        <textarea id="quick-note" placeholder="Écris ta note ici..." maxlength="2000"></textarea>
+        <div class="note-meta">
+          <span id="note-count">0 / 2000</span>
+        </div>
+        <div class="note-actions">
+          <button id="save-note" class="button button-primary" type="button" disabled>
+            <span>Sauvegarder</span>
+            <span class="button-icon">💾</span>
+          </button>
+          <span id="note-status" class="note-status"></span>
+        </div>
+        <div class="note-auth-cta" id="note-auth-cta">
+          <span>
+            🔐 <a href="login.html">Connecte-toi</a> ou 
+            <a href="register.html">crée un compte</a> 
+            pour sauvegarder tes notes.
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="section cta">
+      <div class="cta-box glass">
+        <h2>Prêt à commencer aujourd'hui ?</h2>
+        <p>Explore tous les métiers et thèmes librement. Crée un compte pour suivre ta progression.</p>
+        <div class="cta-buttons">
+          <a href="#courses" class="button button-primary">
+            <span>Explorer les métiers</span>
+            <span class="button-icon">→</span>
+          </a>
+          <a href="register.html" class="button button-secondary">✨ Créer un compte</a>
+          <a href="forum.html" class="button button-secondary">💬 Rejoindre le forum</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <span class="brand-icon">✦</span>
+        <span>Apprendre Tout</span>
+      </div>
+      <div class="footer-links">
+        <a href="index.html">Accueil</a>
+        <a href="forum.html">Forum</a>
+        <a href="certificate.html">Certificats</a>
+        <a href="dashboard.html">Tableau de bord</a>
+        <a href="login.html">Connexion</a>
+        <a href="register.html">Inscription</a>
+      </div>
+      <p class="footer-copy">© <span id="year"></span> — simple, élégant et professionnel.</p>
+    </div>
+  </footer>
+
+  <button class="back-to-top" type="button" aria-label="Retour en haut">
+    <span>↑</span>
+  </button>
+
+  <!-- Modales -->
+  <div class="modal" id="login-modal">
+    <div class="modal-content glass">
+      <button class="modal-close" id="login-modal-close">✕</button>
+      <div class="modal-icon">🔐</div>
+      <h2>Connecte-toi</h2>
+      <p>Connecte-toi pour sauvegarder ta progression.</p>
+      <div class="modal-buttons">
+        <a href="login.html" class="button button-primary">🔑 Se connecter</a>
+        <a href="register.html" class="button button-secondary">✨ Créer un compte</a>
+        <button id="login-modal-later" class="modal-later">⏰ Plus tard</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="signup-modal">
+    <div class="modal-content glass">
+      <button class="modal-close" id="signup-modal-close">✕</button>
+      <div class="modal-icon">🎉</div>
+      <h2>Tu progresses !</h2>
+      <p>Crée un compte pour sauvegarder ta progression.</p>
+      <div class="modal-buttons">
+        <a href="register.html" class="button button-primary">✨ Créer un compte</a>
+        <a href="login.html" class="button button-secondary">🔑 J'ai déjà un compte</a>
+        <button id="signup-modal-later" class="modal-later">⏰ Plus tard</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="auth.js"></script>
+  <script src="courses.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Certificat — Apprendre Tout</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="auth.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-icon">✦</span>
+      <span>Apprendre Tout</span>
+    </div>
+    <div class="topbar-actions">
+      <button class="theme-toggle" type="button" aria-label="Changer le thème">
+        <span class="theme-icon">🌙</span>
+      </button>
+      <button class="menu-button" aria-expanded="false" aria-controls="main-menu" aria-label="Ouvrir le menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <nav class="menu" id="main-menu">
+      <a href="index.html">Accueil</a>
+      <a href="index.html#courses">Métiers</a>
+      <a href="forum.html">💬 Forum</a>
+      <a href="certificate.html" class="active-link">🎓 Certificat</a>
+      <a href="dashboard.html">Tableau de bord</a>
+      <div class="menu-auth" id="menu-auth"></div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="section certificate">
+      <div class="section-header">
+        <span class="section-tag">🎓 Certification</span>
+        <h2>Génère ton certificat</h2>
+        <p>Valide tes compétences et partage tes réussites avec un certificat officiel.</p>
+      </div>
+
+      <div class="certificate-container">
+        <div class="certificate-select-wrapper">
+          <label for="cert-course-select" class="certificate-select-label">Choisis un cours terminé :</label>
+          <select id="cert-course-select" class="courses-filter" aria-label="Sélectionner un cours pour le certificat" title="Sélectionner un cours">
+            <option value="">-- Sélectionne un cours --</option>
+          </select>
+        </div>
+
+        <div id="certificate-preview-container" class="certificate-preview-container" style="display:none;">
+          <div class="certificate-preview" id="certificate-preview">
+            <div class="certificate-border">
+              <div class="certificate-icon">🎓</div>
+              <h1>Certificat de Réussite</h1>
+              <p class="certificate-subtitle">Ce certificat est décerné à</p>
+              <div class="certificate-name" id="cert-name">Nom de l'étudiant</div>
+              <p class="certificate-course">pour avoir terminé avec succès le cours</p>
+              <p class="certificate-course-name" id="cert-course">Nom du cours</p>
+              <p class="certificate-date" id="cert-date">Délivré le 26 juin 2026</p>
+              <div class="certificate-seal">🏅</div>
+            </div>
+          </div>
+
+          <div class="certificate-actions">
+            <button class="button button-primary" id="download-cert-btn">📥 Télécharger le certificat</button>
+            <button class="button button-secondary" id="print-cert-btn">🖨️ Imprimer</button>
+            <button class="button button-secondary" id="share-cert-btn" style="background:rgba(29,161,242,0.12);color:#1DA1F2;">🐦 Partager</button>
+          </div>
+        </div>
+
+        <div id="no-cert-message" class="no-cert-message">
+          <p class="no-cert-icon">📚</p>
+          <p class="no-cert-title">Termine un cours pour obtenir ton certificat !</p>
+          <p class="no-cert-text">Va dans ton tableau de bord et complète un cours pour générer ton certificat.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <span class="brand-icon">✦</span>
+        <span>Apprendre Tout</span>
+      </div>
+      <p class="footer-copy">© <span id="year"></span> — Certification officielle</p>
+    </div>
+  </footer>
+
+  <script src="auth.js"></script>
+  <script src="courses.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      if (typeof Auth !== 'undefined') {
+        const currentUser = Auth.getCurrentUser();
+        const menuAuth = document.getElementById('menu-auth');
+        if (menuAuth) {
+          if (currentUser) {
+            menuAuth.innerHTML = `<span class="auth-user"><span class="auth-user-avatar">${currentUser.avatar || '😊'}</span><span>${currentUser.username}</span></span><button class="auth-btn auth-btn-logout" id="cert-logout-btn">🚪 Déconnexion</button>`;
+            document.getElementById('cert-logout-btn')?.addEventListener('click', function() { if (Auth && Auth.logout) Auth.logout(); });
+          } else {
+            menuAuth.innerHTML = `<a href="login.html" class="auth-btn auth-btn-login">🔑 Connexion</a><a href="register.html" class="auth-btn auth-btn-register">✨ S'inscrire</a>`;
+          }
+        }
+
+        if (currentUser) {
+          const users = window.getUsers ? window.getUsers() : {};
+          const userData = users[currentUser.id];
+          const purchased = userData?.purchasedCourses || [];
+          const select = document.getElementById('cert-course-select');
+          
+          if (purchased.length > 0 && typeof COURSES_DATA !== 'undefined') {
+            const availableCourses = COURSES_DATA.filter(c => purchased.includes(c.id));
+            if (availableCourses.length > 0) {
+              availableCourses.forEach(course => {
+                const option = document.createElement('option');
+                option.value = course.id;
+                option.textContent = course.icon + ' ' + course.title;
+                select.appendChild(option);
+              });
+
+              select.addEventListener('change', function() {
+                const courseId = this.value;
+                if (courseId) {
+                  const course = COURSES_DATA.find(c => c.id === courseId);
+                  if (course) {
+                    document.getElementById('cert-name').textContent = currentUser.username;
+                    document.getElementById('cert-course').textContent = course.icon + ' ' + course.title;
+                    const date = new Date();
+                    document.getElementById('cert-date').textContent = 'Délivré le ' + date.toLocaleDateString('fr-FR', {day:'numeric',month:'long',year:'numeric'});
+                    document.getElementById('certificate-preview-container').style.display = 'block';
+                    document.getElementById('no-cert-message').style.display = 'none';
+                  }
+                }
+              });
+
+              if (availableCourses.length > 0) {
+                select.value = availableCourses[0].id;
+                select.dispatchEvent(new Event('change'));
+              }
+            } else {
+              document.getElementById('no-cert-message').innerHTML = `
+                <p class="no-cert-icon">🎓</p>
+                <p class="no-cert-title">Tu n'as pas encore de cours terminé</p>
+                <p class="no-cert-text">Termine un cours pour générer ton certificat.</p>
+                <a href="dashboard.html" class="button button-primary no-cert-btn">📊 Voir mes cours</a>
+              `;
+            }
+          } else {
+            document.getElementById('no-cert-message').innerHTML = `
+              <p class="no-cert-icon">🎓</p>
+              <p class="no-cert-title">Tu n'as pas encore de cours acheté</p>
+              <p class="no-cert-text">Explore les métiers et achète un cours pour commencer.</p>
+              <a href="index.html#courses" class="button button-primary no-cert-btn">📚 Explorer les métiers</a>
+            `;
+          }
+        }
+      }
+
+      document.getElementById('download-cert-btn')?.addEventListener('click', function() {
+        alert('📥 Téléchargement du certificat en cours...\n\n(Pour une version réelle, génère un PDF avec une librairie comme html2canvas + jsPDF)');
+      });
+
+      document.getElementById('print-cert-btn')?.addEventListener('click', function() { window.print(); });
+
+      document.getElementById('share-cert-btn')?.addEventListener('click', function() {
+        var name = document.getElementById('cert-name').textContent;
+        var course = document.getElementById('cert-course').textContent;
+        alert('🐦 Partage ta réussite !\n\n"🎓 Je viens de terminer ' + course + ' sur Apprendre Tout ! #ApprendreTout #Certification #Formation"');
+      });
+
+      document.getElementById('year').textContent = new Date().getFullYear();
+    });
+  </script>
+</body>
+</html>
