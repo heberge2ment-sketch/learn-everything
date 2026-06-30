@@ -54,7 +54,7 @@
               <span id="user-badges">0 badges</span>
             </div>
           </div>
-          <button id="edit-profile-btn" class="button button-secondary" style="font-size:0.8rem;padding:0.5rem 1rem;">
+          <button id="edit-profile-btn" class="button button-secondary btn-sm">
             ✏️ Modifier
           </button>
         </div>
@@ -90,8 +90,8 @@
           <div class="badge-container" id="badge-container">
             <!-- Généré par JS -->
           </div>
-          <div style="margin-top:0.5rem;">
-            <span id="badge-count" style="font-size:0.85rem;color:var(--color-text-subtle);">0 badges débloqués</span>
+          <div class="badge-footer">
+            <span id="badge-count" class="badge-count-text">0 badges débloqués</span>
           </div>
         </div>
 
@@ -99,14 +99,14 @@
         <div class="dashboard-card glass">
           <h3>📚 Mes cours suivis</h3>
           <div id="my-courses-list">
-            <p style="color: var(--color-text-muted); font-size: 0.95rem;">
+            <p class="empty-courses-message">
               Tu ne suis pas encore de cours. 
-              <a href="index.html#courses" style="color: var(--color-primary); font-weight: 600;">Explore les métiers</a> 
+              <a href="index.html#courses" class="explore-link">Explore les métiers</a> 
               et commence ton apprentissage !
             </p>
           </div>
-          <div style="margin-top:1rem;">
-            <a href="certificate.html" class="button button-primary" style="font-size:0.85rem;padding:0.5rem 1.2rem;width:100%;text-align:center;">
+          <div class="certificate-cta-wrapper">
+            <a href="certificate.html" class="button button-primary certificate-cta-btn">
               🎓 Voir mes certificats
             </a>
           </div>
@@ -142,7 +142,7 @@
             <p><strong>Membre depuis :</strong> <span id="member-since">—</span></p>
             <p><strong>Dernière connexion :</strong> <span id="last-login">—</span></p>
             <p><strong>Thème :</strong> <span id="user-theme">—</span></p>
-            <button id="view-profile-btn" class="button button-primary" style="font-size:0.85rem;padding:0.5rem 1.5rem;margin-top:0.5rem;">
+            <button id="view-profile-btn" class="button button-primary profile-edit-btn">
               Modifier mon profil
             </button>
           </div>
@@ -197,11 +197,11 @@
         <span class="brand-icon">✦</span>
         <span>Apprendre Tout</span>
       </div>
-      <div style="display:flex;flex-wrap:wrap;gap:1.5rem;justify-content:center;margin-bottom:0.5rem;">
-        <a href="index.html" style="color:var(--color-text-muted);font-size:0.9rem;">Accueil</a>
-        <a href="forum.html" style="color:var(--color-text-muted);font-size:0.9rem;">Forum</a>
-        <a href="certificate.html" style="color:var(--color-text-muted);font-size:0.9rem;">Certificats</a>
-        <a href="login.html" style="color:var(--color-text-muted);font-size:0.9rem;">Connexion</a>
+      <div class="footer-links-row">
+        <a href="index.html" class="footer-link">Accueil</a>
+        <a href="forum.html" class="footer-link">Forum</a>
+        <a href="certificate.html" class="footer-link">Certificats</a>
+        <a href="login.html" class="footer-link">Connexion</a>
       </div>
       <p class="footer-copy">© <span id="year"></span> — Ton espace d'apprentissage personnel.</p>
     </div>
@@ -256,9 +256,9 @@
       const coursesList = document.getElementById('my-courses-list');
       if (following.length === 0) {
         coursesList.innerHTML = `
-          <p style="color: var(--color-text-muted); font-size: 0.95rem;">
+          <p class="empty-courses-message">
             Tu ne suis pas encore de cours. 
-            <a href="index.html#courses" style="color: var(--color-primary); font-weight: 600;">Explore les métiers</a> 
+            <a href="index.html#courses" class="explore-link">Explore les métiers</a> 
             et commence ton apprentissage !
           </p>
         `;
@@ -275,7 +275,7 @@
                 <span>${course.category}</span>
               </div>
               <span class="course-status">${isPurchased ? '✅ Acheté' : '📖 En cours'}</span>
-              <a href="course-detail.html?id=${course.id}" class="button button-secondary" style="font-size:0.7rem;padding:0.2rem 0.8rem;">
+              <a href="course-detail.html?id=${course.id}" class="button button-secondary btn-tiny">
                 Voir
               </a>
             </div>
@@ -370,7 +370,7 @@
 
       const currentUser = Auth.getCurrentUser();
       if (!currentUser) {
-        container.innerHTML = '<p style="color:var(--color-text-muted);">Connecte-toi pour voir tes badges</p>';
+        container.innerHTML = '<p class="badge-message">Connecte-toi pour voir tes badges</p>';
         return;
       }
 
@@ -381,7 +381,7 @@
       document.getElementById('badge-count').textContent = userBadges.length + ' / ' + allBadges.length + ' badges débloqués';
 
       if (allBadges.length === 0) {
-        container.innerHTML = '<p style="color:var(--color-text-muted);">Aucun badge disponible pour le moment.</p>';
+        container.innerHTML = '<p class="badge-message">Aucun badge disponible pour le moment.</p>';
         return;
       }
 
@@ -398,11 +398,9 @@
               <div class="badge-progress">
                 <div class="badge-progress-fill" style="width:${progress.percentage}%;"></div>
               </div>
-              <span style="font-size:0.6rem;color:var(--color-text-subtle);margin-top:0.1rem;">
-                ${progress.current}/${progress.target}
-              </span>
+              <span class="badge-progress-text">${progress.current}/${progress.target}</span>
             ` : `
-              <span style="font-size:0.6rem;color:#00D2A0;">✅ Débloqué</span>
+              <span class="badge-unlocked-text">✅ Débloqué</span>
             `}
           </div>
         `;
