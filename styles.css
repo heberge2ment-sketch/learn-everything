@@ -999,3 +999,59 @@ body.dark-theme .badge-notification { background: linear-gradient(135deg, #1a0a2
   background: rgba(29, 161, 242, 0.2);
   transform: translateY(-2px);
 }
+
+/* ==========================================
+   RECHERCHE AVANCÉE
+   ========================================== */
+
+.courses-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.courses-toolbar .search-wrapper {
+  flex: 2;
+  min-width: 200px;
+  max-width: 400px;
+}
+
+.courses-toolbar .filter-wrapper {
+  flex: 1;
+  min-width: 160px;
+}
+
+.courses-filter {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-pill);
+  border: 2px solid rgba(108, 60, 225, 0.1);
+  background: var(--color-surface);
+  font-size: 0.95rem;
+  transition: var(--transition-smooth);
+  cursor: pointer;
+}
+
+.courses-filter:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 4px rgba(108, 60, 225, 0.1);
+}
+
+.courses-filter option {
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+/* Dark theme */
+body.dark-theme .courses-filter {
+  background: rgba(26, 10, 46, 0.6);
+  border-color: rgba(255, 255, 255, 0.08);
+  color: var(--color-text);
+}
+
+body.dark-theme .courses-filter option {
+  background: #1a0a2e;
+  color: var(--color-text);
+}

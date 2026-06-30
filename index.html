@@ -12,6 +12,7 @@
   
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="auth.css" />
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
 </head>
 <body>
   <!-- Loader -->
@@ -105,7 +106,7 @@
       </div>
     </section>
 
-    <!-- SECTION MÉTIERS -->
+        <!-- SECTION MÉTIERS -->
     <section id="courses" class="section courses">
       <div class="section-header">
         <span class="section-tag">📚 Formations</span>
@@ -140,6 +141,23 @@
             <option value="Artisanat">🔨 Artisanat</option>
             <option value="Médias">📰 Médias</option>
             <option value="Sport">💪 Sport</option>
+          </select>
+        </div>
+        <!-- Nouveaux filtres : Niveau et Prix -->
+        <div class="filter-wrapper">
+          <select id="search-level" class="courses-filter" aria-label="Filtrer par niveau">
+            <option value="all">📊 Tous les niveaux</option>
+            <option value="Débutant">🌱 Débutant</option>
+            <option value="Intermédiaire">🌿 Intermédiaire</option>
+            <option value="Avancé">🚀 Avancé</option>
+          </select>
+        </div>
+        <div class="filter-wrapper">
+          <select id="search-price" class="courses-filter" aria-label="Filtrer par prix">
+            <option value="all">💰 Tous les prix</option>
+            <option value="0-100000">Moins de 100 000 FCFA</option>
+            <option value="100000-200000">100 000 - 200 000 FCFA</option>
+            <option value="200000+">Plus de 200 000 FCFA</option>
           </select>
         </div>
       </div>

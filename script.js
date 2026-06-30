@@ -81,7 +81,30 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   /* ==========================================
-     3. MODALES D'INVITATION
+     3. MENU MOBILE
+     ========================================== */
+  const menuButton = document.querySelector('.menu-button');
+  const menu = document.querySelector('.menu');
+
+  if (menuButton && menu) {
+    menuButton.addEventListener('click', function() {
+      const isExpanded = this.getAttribute('aria-expanded') === 'true';
+      this.setAttribute('aria-expanded', !isExpanded);
+      menu.classList.toggle('active');
+    });
+
+    menu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', function() {
+        menu.classList.remove('active');
+        if (menuButton) {
+          menuButton.setAttribute('aria-expanded', 'false');
+        }
+      });
+    });
+  }
+
+  /* ==========================================
+     4. MODALES D'INVITATION
      ========================================== */
   let signupModalShown = false;
   function showSignupModal() {
@@ -129,7 +152,7 @@ document.addEventListener('DOMContentLoaded', function () {
   };
 
   /* ==========================================
-     4. FONCTIONS UTILITAIRES
+     5. FONCTIONS UTILITAIRES
      ========================================== */
   function getPurchasedCourses() {
     const user = Auth ? Auth.getCurrentUser() : null;
@@ -149,13 +172,15 @@ document.addEventListener('DOMContentLoaded', function () {
     if (window.saveUsers) window.saveUsers(users);
   }
 
-  /* ==========================================
-     5. CHARGEMENT DES COURS
+    /* ==========================================
+     6. CHARGEMENT DES COURS AVEC RECHERCHE AVANCÉE
      ========================================== */
   function renderCourses() {
     const grid = document.getElementById('courses-grid');
     const searchInput = document.getElementById('courses-search');
     const filterSelect = document.getElementById('courses-filter');
+    const levelSelect = document.getElementById('search-level');
+    const priceSelect = document.getElementById('search-price');
     const emptyMsg = document.getElementById('courses-empty');
     const counterEl = document.getElementById('courses-count');
     if (!grid) return;
@@ -166,12 +191,42 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function getCourses() {
       let courses = [...COURSES_DATA];
+      
+      // Filtre par recherche
       const query = searchInput?.value.trim().toLowerCase() || '';
       if (query) {
-        courses = courses.filter(c => c.title.toLowerCase().includes(query) || c.category.toLowerCase().includes(query) || c.description.toLowerCase().includes(query) || c.skills.some(s => s.toLowerCase().includes(query)));
+        courses = courses.filter(c => 
+          c.title.toLowerCase().includes(query) || 
+          c.category.toLowerCase().includes(query) || 
+          c.description.toLowerCase().includes(query) || 
+          c.skills.some(s => s.toLowerCase().includes(query))
+        );
       }
+      
+      // Filtre par catégorie
       const category = filterSelect?.value || 'all';
-      if (category !== 'all') courses = courses.filter(c => c.category === category);
+      if (category !== 'all') {
+        courses = courses.filter(c => c.category === category);
+      }
+      
+      // NOUVEAU : Filtre par niveau
+      const level = levelSelect?.value || 'all';
+      if (level !== 'all') {
+        courses = courses.filter(c => c.level.includes(level));
+      }
+      
+      // NOUVEAU : Filtre par prix
+      const price = priceSelect?.value || 'all';
+      if (price !== 'all') {
+        if (price === '0-100000') {
+          courses = courses.filter(c => c.price <= 100000);
+        } else if (price === '100000-200000') {
+          courses = courses.filter(c => c.price > 100000 && c.price <= 200000);
+        } else if (price === '200000+') {
+          courses = courses.filter(c => c.price > 200000);
+        }
+      }
+      
       return courses;
     }
 
@@ -180,7 +235,14 @@ document.addEventListener('DOMContentLoaded', function () {
       const currentUser = Auth ? Auth.getCurrentUser() : null;
       const purchased = getPurchasedCourses();
       if (counterEl) counterEl.textContent = courses.length;
-      if (courses.length === 0) { grid.innerHTML = ''; if (emptyMsg) emptyMsg.style.display = 'block'; return; }
+      if (courses.length === 0) { 
+        grid.innerHTML = ''; 
+        if (emptyMsg) {
+          emptyMsg.style.display = 'block';
+          emptyMsg.textContent = '🔍 Aucun métier ne correspond à tes critères. Essaie d\'autres filtres !';
+        }
+        return; 
+      }
       if (emptyMsg) emptyMsg.style.display = 'none';
 
       grid.innerHTML = courses.map(course => {
@@ -197,6 +259,7 @@ document.addEventListener('DOMContentLoaded', function () {
               <span>📚 ${course.lessons.length} leçons</span>
               <span>⏱️ ${course.duration}</span>
               <span>📊 ${course.level}</span>
+              <span>💰 ${course.price.toLocaleString()} FCFA</span>
             </div>
             <div class="course-skills">${course.skills.map(skill => `<span class="skill-tag">${skill}</span>`).join('')}</div>
             <div class="course-footer">
@@ -207,6 +270,7 @@ document.addEventListener('DOMContentLoaded', function () {
               ` : `
                 <button class="button button-secondary" style="font-size:0.85rem;padding:0.6rem 1.5rem;background:rgba(255,215,0,0.15);color:#FFD700;" onclick="showLoginModal()">🔒 Se connecter</button>
               `}
+              <a href="course-detail.html?id=${course.id}" class="button button-secondary" style="font-size:0.8rem;padding:0.4rem 1rem;">🔍 Détail</a>
             </div>
           </article>
         `;
@@ -226,14 +290,17 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     }
 
+    // Écouteurs d'événements pour tous les filtres
     searchInput?.addEventListener('input', render);
     filterSelect?.addEventListener('change', render);
+    levelSelect?.addEventListener('change', render);
+    priceSelect?.addEventListener('change', render);
     render();
     return render;
   }
 
   /* ==========================================
-     6. SUIVRE UN COURS
+     7. SUIVRE UN COURS
      ========================================== */
   window.followCourse = function(courseId) {
     const user = Auth.getCurrentUser();
@@ -264,7 +331,7 @@ document.addEventListener('DOMContentLoaded', function () {
   };
 
   /* ==========================================
-     7. AUTRES FONCTIONS
+     8. AUTRES FONCTIONS
      ========================================== */
   window.saveGuestProgress = function() {
     if (Auth && Auth.getCurrentUser()) { alert('✅ Tu es déjà connecté ! Tes données sont sauvegardées automatiquement.'); return; }
@@ -281,7 +348,7 @@ document.addEventListener('DOMContentLoaded', function () {
   };
 
   /* ==========================================
-     8. THÈME CLAIR/SOMBRE
+     9. THÈME CLAIR/SOMBRE
      ========================================== */
   const themeToggle = document.querySelector('.theme-toggle');
   const themeIcon = themeToggle?.querySelector('.theme-icon');
@@ -302,7 +369,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   /* ==========================================
-     9. PARTICULES FLOTTANTES
+     10. PARTICULES FLOTTANTES
      ========================================== */
   function createParticles() {
     const container = document.getElementById('particles');
@@ -341,7 +408,7 @@ document.addEventListener('DOMContentLoaded', function () {
   createParticles();
 
   /* ==========================================
-     10. SCROLL
+     11. SCROLL
      ========================================== */
   const backToTop = document.querySelector('.back-to-top');
   const progressBar = document.getElementById('progress-bar');
@@ -385,16 +452,16 @@ document.addEventListener('DOMContentLoaded', function () {
   updateReadingProgress();
 
   /* ==========================================
-     11. ANIMATIONS AU SCROLL
+     12. ANIMATIONS AU SCROLL
      ========================================== */
   const observerOptions = { threshold: 0.15, rootMargin: '0px 0px -40px 0px' };
-  const observer = new IntersectionObserver((entries) => {
+  const scrollObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
   }, observerOptions);
-  document.querySelectorAll('.feature-card, .step-card, .course-card').forEach(el => { observer.observe(el); });
+  document.querySelectorAll('.feature-card, .step-card, .course-card').forEach(el => { scrollObserver.observe(el); });
 
   /* ==========================================
-     12. FONCTIONS POUR LES THÈMES
+     13. FONCTIONS POUR LES THÈMES
      ========================================== */
   function loadDoneTopics() {
     try { const raw = localStorage.getItem('learning-site-topics-done'); return raw ? JSON.parse(raw) : {}; } catch (_) { return {}; }
@@ -429,7 +496,7 @@ document.addEventListener('DOMContentLoaded', function () {
   setTimeout(initTopicsProgress, 300);
 
   /* ==========================================
-     13. INITIALISATION DES COURS
+     14. INITIALISATION DES COURS
      ========================================== */
   setTimeout(function() {
     if (typeof COURSES_DATA !== 'undefined') {
