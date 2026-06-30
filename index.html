@@ -535,6 +535,51 @@
         </div>
       </div>
     </section>
+
+        <!-- NEWSLETTER -->
+    <section class="section newsletter-section">
+      <div class="newsletter-box glass">
+        <div class="newsletter-content">
+          <span class="newsletter-badge">📬 Newsletter</span>
+          <h2>Reçois nos actualités</h2>
+          <p>Inscris-toi pour recevoir les nouvelles formations, les conseils exclusifs et les offres spéciales.</p>
+          
+          <form id="newsletter-section-form" class="newsletter-form">
+            <div class="newsletter-input-group">
+              <input 
+                type="email" 
+                id="newsletter-email" 
+                placeholder="ton@email.com" 
+                required 
+                aria-label="Email pour la newsletter"
+              />
+              <button type="submit" class="button button-primary">
+                S'inscrire <span class="button-icon">→</span>
+              </button>
+            </div>
+            <div id="newsletter-message" class="newsletter-message" style="display:none;"></div>
+          </form>
+          
+          <div class="newsletter-stats">
+            <span class="newsletter-stat">
+              <span class="newsletter-stat-number newsletter-count">0</span>
+              <span class="newsletter-stat-label">abonnés</span>
+            </span>
+            <span class="newsletter-stat">
+              <span class="newsletter-stat-number">📧</span>
+              <span class="newsletter-stat-label">1 email par semaine</span>
+            </span>
+            <span class="newsletter-stat">
+              <span class="newsletter-stat-number">🔒</span>
+              <span class="newsletter-stat-label">Pas de spam</span>
+            </span>
+          </div>
+        </div>
+        <div class="newsletter-illustration">
+          <span class="newsletter-emoji">📨</span>
+        </div>
+      </div>
+    </section>
   </main>
 
   <footer class="footer">
@@ -591,5 +636,34 @@
   <script src="auth.js"></script>
   <script src="courses.js"></script>
   <script src="script.js"></script>
+
+    <!-- POPUP NEWSLETTER -->
+  <div class="popup-overlay" id="newsletter-popup">
+    <div class="popup-content glass">
+      <button class="popup-close" id="newsletter-popup-close" aria-label="Fermer">✕</button>
+      <div class="popup-icon">📬</div>
+      <h2>Ne manque rien !</h2>
+      <p>Inscris-toi à notre newsletter et sois informé des nouvelles formations et offres exclusives.</p>
+      <form id="newsletter-popup-form" class="newsletter-form">
+        <div class="newsletter-input-group">
+          <input 
+            type="email" 
+            id="newsletter-popup-email" 
+            placeholder="ton@email.com" 
+            required 
+            aria-label="Email pour la newsletter"
+          />
+          <button type="submit" class="button button-primary">
+            S'inscrire <span class="button-icon">→</span>
+          </button>
+        </div>
+        <div id="newsletter-popup-message" class="newsletter-message" style="display:none;"></div>
+      </form>
+      <p class="popup-note">🔒 Pas de spam, désinscription à tout moment.</p>
+    </div>
+  </div>
+
+  <script src="newsletter.js"></script>
+    <script src="newsletter.js"></script>
 </body>
 </html>
