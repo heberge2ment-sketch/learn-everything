@@ -52,7 +52,7 @@
           </select>
         </div>
 
-        <div id="certificate-preview-container" class="certificate-preview-container" style="display:none;">
+        <div id="certificate-preview-container" class="certificate-preview-container">
           <div class="certificate-preview" id="certificate-preview">
             <div class="certificate-border">
               <div class="certificate-icon">🎓</div>
@@ -69,7 +69,7 @@
           <div class="certificate-actions">
             <button class="button button-primary" id="download-cert-btn">📥 Télécharger le certificat</button>
             <button class="button button-secondary" id="print-cert-btn">🖨️ Imprimer</button>
-            <button class="button button-secondary" id="share-cert-btn" style="background:rgba(29,161,242,0.12);color:#1DA1F2;">🐦 Partager</button>
+            <button class="button button-secondary" id="share-cert-btn">🐦 Partager</button>
           </div>
         </div>
 
@@ -96,6 +96,7 @@
   <script src="courses.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function() {
+      // Auth UI
       if (typeof Auth !== 'undefined') {
         const currentUser = Auth.getCurrentUser();
         const menuAuth = document.getElementById('menu-auth');
@@ -108,6 +109,7 @@
           }
         }
 
+        // Charger les cours
         if (currentUser) {
           const users = window.getUsers ? window.getUsers() : {};
           const userData = users[currentUser.id];
@@ -162,16 +164,32 @@
         }
       }
 
+      // ==========================================
+      // 1. TÉLÉCHARGER LE CERTIFICAT (PDF)
+      // ==========================================
       document.getElementById('download-cert-btn')?.addEventListener('click', function() {
         alert('📥 Téléchargement du certificat en cours...\n\n(Pour une version réelle, génère un PDF avec une librairie comme html2canvas + jsPDF)');
       });
 
-      document.getElementById('print-cert-btn')?.addEventListener('click', function() { window.print(); });
+      // ==========================================
+      // 2. IMPRIMER LE CERTIFICAT
+      // ==========================================
+      document.getElementById('print-cert-btn')?.addEventListener('click', function() {
+        window.print();
+      });
 
+      // ==========================================
+      // 3. PARTAGER LE CERTIFICAT
+      // ==========================================
       document.getElementById('share-cert-btn')?.addEventListener('click', function() {
         var name = document.getElementById('cert-name').textContent;
         var course = document.getElementById('cert-course').textContent;
-        alert('🐦 Partage ta réussite !\n\n"🎓 Je viens de terminer ' + course + ' sur Apprendre Tout ! #ApprendreTout #Certification #Formation"');
+        var shareText = encodeURIComponent(
+          '🎓 Je viens de terminer ' + course + ' sur Apprendre Tout ! #ApprendreTout #Certification #Formation'
+        );
+        
+        // Ouvrir le partage Twitter
+        window.open('https://twitter.com/intent/tweet?text=' + shareText, '_blank');
       });
 
       document.getElementById('year').textContent = new Date().getFullYear();

@@ -913,3 +913,89 @@ body.dark-theme .badge-notification { background: linear-gradient(135deg, #1a0a2
   line-clamp: 3;
   overflow: hidden;
 }
+
+/* ==========================================
+   IMPRESSION DU CERTIFICAT
+   ========================================== */
+
+@media print {
+  /* Cacher tout ce qui n'est pas le certificat */
+  .topbar,
+  .footer,
+  .certificate-actions,
+  .certificate-select-wrapper,
+  .section-header,
+  .no-cert-message,
+  .certificate-actions {
+    display: none !important;
+  }
+
+  /* Réinitialiser les styles pour l'impression */
+  body {
+    background: white !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    color: black !important;
+  }
+
+  .certificate-container {
+    padding: 0 !important;
+    margin: 0 auto !important;
+    max-width: 100% !important;
+  }
+
+  .certificate-preview {
+    box-shadow: none !important;
+    border: 3px solid #1a0a2e !important;
+    border-radius: 12px !important;
+    padding: 2rem !important;
+    margin: 0 auto !important;
+    background: white !important;
+    max-width: 800px !important;
+  }
+
+  .certificate-preview .certificate-border {
+    border: 2px solid #FFD700 !important;
+    padding: 2rem !important;
+    border-radius: 12px !important;
+    background: #faf8ff !important;
+  }
+
+  .certificate-preview h1 {
+    color: #6C3CE1 !important;
+    font-size: 2.2rem !important;
+  }
+
+  .certificate-preview .certificate-name {
+    color: #1a0a2e !important;
+    border-bottom: 2px dashed #6C3CE1 !important;
+  }
+
+  .certificate-preview .certificate-course-name {
+    color: #6C3CE1 !important;
+  }
+
+  .certificate-preview .certificate-seal {
+    font-size: 3rem !important;
+  }
+
+  /* Éviter les coupures de page */
+  .certificate-preview {
+    page-break-inside: avoid !important;
+  }
+
+  .certificate-border {
+    page-break-inside: avoid !important;
+  }
+}
+
+/* Styles pour le bouton Partager */
+#share-cert-btn {
+  background: rgba(29, 161, 242, 0.12);
+  color: #1DA1F2;
+}
+
+#share-cert-btn:hover {
+  background: rgba(29, 161, 242, 0.2);
+  transform: translateY(-2px);
+}
