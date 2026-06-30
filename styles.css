@@ -1395,3 +1395,7 @@ body.dark-theme .popup-content .newsletter-input-group {
 body.dark-theme .newsletter-box {
   background: linear-gradient(135deg, #1a0a2e 0%, #2d1b69 50%, #1a3a5c 100%);
 }
+
+.hidden-message {
+  display: none;
+}
