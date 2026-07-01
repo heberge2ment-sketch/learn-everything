@@ -4,13 +4,20 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Forum — Apprendre Tout</title>
+  <meta name="description" content="Échange avec d'autres apprenants sur le forum Apprendre Tout." />
+  
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="auth.css" />
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
 </head>
 <body>
+  <!-- ========================================== -->
+  <!-- HEADER / TOPBAR -->
+  <!-- ========================================== -->
   <header class="topbar">
     <div class="brand">
       <span class="brand-icon">✦</span>
@@ -28,13 +35,20 @@
     </div>
     <nav class="menu" id="main-menu">
       <a href="index.html">Accueil</a>
+      <a href="index.html#courses">Métiers</a>
+      <a href="forum.html" class="active-link">Forum</a>
+      <a href="certificate.html">🎓 Certificat</a>
       <a href="dashboard.html">Tableau de bord</a>
       <div class="menu-auth" id="menu-auth"></div>
     </nav>
   </header>
 
+  <!-- ========================================== -->
+  <!-- MAIN CONTENT -->
+  <!-- ========================================== -->
   <main>
     <section class="section forum">
+      <!-- En-tête -->
       <div class="section-header">
         <span class="section-tag">💬 Communauté</span>
         <h2>Forum de discussion</h2>
@@ -42,43 +56,62 @@
       </div>
 
       <div class="forum-container">
-        <!-- Barre d'actions -->
+        <!-- ========================================== -->
+        <!-- BARRE D'ACTIONS : Filtres + Nouveau sujet -->
+        <!-- ========================================== -->
         <div class="forum-actions">
           <div class="forum-filters">
             <select id="forum-filter" class="courses-filter" title="Filtrer les sujets du forum" aria-label="Filtrer les sujets du forum">
-              <option value="all">Tous les sujets</option>
+              <option value="all">📋 Tous les sujets</option>
               <option value="hot">🔥 Populaires</option>
               <option value="solved">✅ Résolus</option>
               <option value="pinned">📌 Épinglés</option>
             </select>
-            <input type="search" id="forum-search" class="courses-search" placeholder="Rechercher un sujet..." />
+            <input type="search" id="forum-search" class="courses-search" placeholder="🔍 Rechercher un sujet..." aria-label="Rechercher un sujet" />
           </div>
           <button class="button button-primary" id="new-topic-btn">
             ✏️ Nouveau sujet
           </button>
         </div>
 
-        <!-- Liste des sujets -->
+        <!-- ========================================== -->
+        <!-- LISTE DES SUJETS -->
+        <!-- ========================================== -->
         <div id="forum-topics">
-          <!-- Généré par JS -->
+          <!-- Généré par JavaScript -->
         </div>
 
-        <!-- Formulaire nouveau sujet (caché) -->
+        <!-- ========================================== -->
+        <!-- FORMULAIRE : Nouveau sujet (caché) -->
+        <!-- ========================================== -->
         <div id="new-topic-form" class="hidden-topic-form">
           <div class="glass topic-form-container">
             <h3 class="topic-form-title">✏️ Créer un nouveau sujet</h3>
-            <form class="forum-form" id="topic-form">
-              <input type="text" id="topic-title" placeholder="Titre du sujet" required />
+            <form class="forum-form" id="topic-form" autocomplete="off">
+              <input type="text" id="topic-title" placeholder="Titre du sujet" required aria-label="Titre du sujet" />
+              
               <select id="topic-category" required title="Choisir une catégorie" aria-label="Choisir une catégorie pour le sujet">
-                <option value="">Choisir une catégorie</option>
+                <option value="">📂 Choisir une catégorie</option>
                 <option value="Informatique">💻 Informatique</option>
                 <option value="Marketing">📈 Marketing</option>
                 <option value="Design">🎨 Design</option>
                 <option value="Business">🚀 Business</option>
                 <option value="Santé">🏥 Santé</option>
+                <option value="Art">🎭 Art & Culture</option>
+                <option value="Bâtiment">🧱 Bâtiment</option>
+                <option value="Agriculture">🌾 Agriculture</option>
+                <option value="Transport">🚛 Transport</option>
+                <option value="Hôtellerie">🍳 Hôtellerie</option>
+                <option value="Services">💆 Services</option>
+                <option value="Éducation">📚 Éducation</option>
+                <option value="Artisanat">🔨 Artisanat</option>
+                <option value="Médias">📰 Médias</option>
+                <option value="Sport">💪 Sport</option>
                 <option value="Autre">📌 Autre</option>
               </select>
-              <textarea id="topic-content" placeholder="Décris ton sujet en détail..." rows="5" required></textarea>
+              
+              <textarea id="topic-content" placeholder="Décris ton sujet en détail..." rows="5" required aria-label="Contenu du sujet"></textarea>
+              
               <div class="forum-form-actions">
                 <button type="submit" class="button button-primary">📤 Publier</button>
                 <button type="button" id="cancel-topic" class="button button-secondary">Annuler</button>
@@ -87,16 +120,22 @@
           </div>
         </div>
 
-        <!-- Vue d'un sujet (caché) -->
+        <!-- ========================================== -->
+        <!-- VUE D'UN SUJET (caché) -->
+        <!-- ========================================== -->
         <div id="topic-view" class="hidden-topic-view">
-          <button id="back-to-topics" class="button button-secondary">← Retour aux sujets</button>
+          <button id="back-to-topics" class="button button-secondary">
+            ← Retour aux sujets
+          </button>
+          
           <div id="topic-messages">
-            <!-- Généré par JS -->
+            <!-- Généré par JavaScript -->
           </div>
+          
           <div class="reply-section">
             <h4>💬 Répondre</h4>
-            <form id="reply-form">
-              <textarea id="reply-content" placeholder="Écris ta réponse..." rows="4"></textarea>
+            <form id="reply-form" autocomplete="off">
+              <textarea id="reply-content" placeholder="Écris ta réponse..." rows="4" aria-label="Réponse"></textarea>
               <button type="submit" class="button button-primary">📤 Répondre</button>
             </form>
           </div>
@@ -105,16 +144,30 @@
     </section>
   </main>
 
+  <!-- ========================================== -->
+  <!-- FOOTER -->
+  <!-- ========================================== -->
   <footer class="footer">
     <div class="footer-content">
       <div class="footer-brand">
         <span class="brand-icon">✦</span>
         <span>Apprendre Tout</span>
       </div>
+      <div class="footer-links-row">
+        <a href="index.html" class="footer-link">Accueil</a>
+        <a href="forum.html" class="footer-link">Forum</a>
+        <a href="certificate.html" class="footer-link">Certificats</a>
+        <a href="dashboard.html" class="footer-link">Tableau de bord</a>
+        <a href="login.html" class="footer-link">Connexion</a>
+        <a href="register.html" class="footer-link">Inscription</a>
+      </div>
       <p class="footer-copy">© <span id="year"></span> — Communauté d'apprentissage</p>
     </div>
   </footer>
 
+  <!-- ========================================== -->
+  <!-- SCRIPTS -->
+  <!-- ========================================== -->
   <script src="auth.js"></script>
   <script>
     // ==========================================
@@ -206,6 +259,9 @@
     let currentUser = null;
     let currentTopicId = null;
 
+    // ==========================================
+    // AFFICHER LES SUJETS
+    // ==========================================
     function renderTopics(filter = 'all', search = '') {
       const container = document.getElementById('forum-topics');
       let topics = getTopics();
@@ -270,6 +326,9 @@
       });
     }
 
+    // ==========================================
+    // AFFICHER UN SUJET
+    // ==========================================
     function showTopic(id) {
       const topics = getTopics();
       const topic = topics.find(t => t.id === id);
@@ -305,7 +364,11 @@
       `;
     }
 
+    // ==========================================
+    // INITIALISATION
+    // ==========================================
     function initForum() {
+      // Auth UI
       if (typeof Auth !== 'undefined') {
         currentUser = Auth.getCurrentUser();
         const menuAuth = document.getElementById('menu-auth');
@@ -330,8 +393,10 @@
         }
       }
 
+      // Rendre les sujets
       renderTopics();
 
+      // Filtres
       document.getElementById('forum-filter')?.addEventListener('change', function() {
         renderTopics(this.value, document.getElementById('forum-search').value);
       });
@@ -339,6 +404,7 @@
         renderTopics(document.getElementById('forum-filter').value, this.value);
       });
 
+      // Nouveau sujet
       document.getElementById('new-topic-btn')?.addEventListener('click', function() {
         if (!currentUser) {
           alert('🔐 Connecte-toi pour créer un sujet !');
@@ -354,6 +420,7 @@
         document.getElementById('new-topic-form').style.display = 'none';
       });
 
+      // Soumission du sujet
       document.getElementById('topic-form')?.addEventListener('submit', function(e) {
         e.preventDefault();
         if (!currentUser) {
@@ -392,6 +459,7 @@
         alert('✅ Sujet créé avec succès !');
       });
 
+      // Réponse
       document.getElementById('reply-form')?.addEventListener('submit', function(e) {
         e.preventDefault();
         if (!currentUser) {
@@ -419,12 +487,14 @@
         }
       });
 
+      // Retour à la liste
       document.getElementById('back-to-topics')?.addEventListener('click', function() {
         document.getElementById('topic-view').style.display = 'none';
         document.getElementById('forum-topics').style.display = 'block';
         renderTopics();
       });
 
+      // Année
       document.getElementById('year').textContent = new Date().getFullYear();
     }
 
